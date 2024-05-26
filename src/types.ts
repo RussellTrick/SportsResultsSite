@@ -12,6 +12,7 @@ export type PlayerStats = {
   flag: string;
   countryname: string;
   timeDifference?: string;
+  flagUrl?: string | null;
 };
 
 export type ResultsData = {
