@@ -19,9 +19,11 @@ const columnHelper = createColumnHelper<PlayerStats>();
 const columns = [
   columnHelper.accessor("rank", {
     cell: (info) => info.getValue(),
-    header: () => <span>Rank</span>
+    header: () => <span>Rank</span>,
   }),
-  columnHelper.accessor("finishtime", {header: () => <span>Finish Time</span>
+  columnHelper.accessor("finishtime", {
+    header: () => <span>Finish Time</span>,
+  }),
 ];
 
 function ResultsTable() {
