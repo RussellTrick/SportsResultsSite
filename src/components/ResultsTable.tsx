@@ -1,28 +1,18 @@
-import React from "react";
 import { createColumnHelper, useReactTable } from "@tanstack/react-table";
-
-type PlayerStats = {
-  rank: number;
-  firstname: string;
-  surname: string;
-  athleteid: string;
-  finishtime: string;
-  raceprogress: string;
-  teamname: string;
-  bibnumber: string;
-  flag: string;
-  countryname: string;
-};
+import { PlayerStats } from "../types";
 
 const columnHelper = createColumnHelper<PlayerStats>();
 
 const columns = [
   columnHelper.accessor("rank", {
     cell: (info) => info.getValue(),
-    header: () => <span>Rank</span>,
+    header: () => <span>Pos.</span>,
+  }),
+  columnHelper.accessor("bibnumber", {
+    header: () => <span>Bib Nº</span>,
   }),
   columnHelper.accessor("finishtime", {
-    header: () => <span>Finish Time</span>,
+    header: () => <span>Fin. Time</span>,
   }),
 ];
 
