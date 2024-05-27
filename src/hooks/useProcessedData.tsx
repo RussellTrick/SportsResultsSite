@@ -46,7 +46,7 @@ function calculateTimeDifferences(athletes: PlayerStats[]): PlayerStats[] {
 
 async function fetchFlags(athletes: PlayerStats[]): Promise<PlayerStats[]> {
   for (let i = 0; i < athletes.length; i++) {
-    const flagUrl = await flagService.fetchFlag(athletes[i].flag);
+    const flagUrl = flagService.fetchFlag(athletes[i].flag);
     athletes[i].flagUrl = flagUrl;
   }
   return athletes;

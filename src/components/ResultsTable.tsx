@@ -6,49 +6,64 @@ import {
 } from "@tanstack/react-table";
 import { PlayerStats } from "../types";
 import useProcessedData from "../hooks/useProcessedData";
+import PlayerModal from "./PlayerModal";
+import { useState } from "react";
 
 const columnHelper = createColumnHelper<PlayerStats>();
 
-const columns = [
-  columnHelper.accessor("rank", {
-    cell: (info) => info.getValue(),
-    header: () => <span>Pos.</span>,
-  }),
-  columnHelper.accessor((row) => `${row.firstname} ${row.surname}`, {
-    id: "fullName",
-    header: () => <span>Name</span>,
-  }),
-  columnHelper.accessor("bibnumber", {
-    header: () => <span>Bib Nº</span>,
-  }),
-  columnHelper.accessor("finishtime", {
-    header: () => <span>Fin. Time</span>,
-  }),
-  columnHelper.accessor("timeDifference", {
-    header: () => <span>Time Diff.</span>,
-  }),
-  columnHelper.accessor((row) => row.flag, {
-    header: () => <span>Country</span>,
-    id: "flag",
-    cell: (info) => {
-      const flagUrl = info.row.original.flagUrl;
-      return flagUrl ? (
-        <img
-          src={flagUrl}
-          alt={`Flag of ${info.row.original.countryname}`}
-          className="border border-dark"
-          width={40}
-        />
-      ) : (
-        <span>{info.getValue()}</span>
-      );
-    },
-  }),
-];
-
 function ResultsTable() {
   const data = useProcessedData();
+  const [modalPlayer, setModalPlayer] = useState<PlayerStats | null>(null);
 
+  const columns = [
+    columnHelper.accessor("rank", {
+      cell: (info) => info.getValue(),
+      header: () => <span>Pos.</span>,
+    }),
+    columnHelper.accessor((row) => `${row.firstname} ${row.surname}`, {
+      id: "fullName",
+      header: () => <span>Name</span>,
+      cell: (cell) => {
+        const rowData = cell.row.original;
+        return (
+          <button
+            className="btn btn-outline-primary border-0 p-0 hover-none"
+            onClick={() => {
+              setModalPlayer(rowData);
+            }}
+          >
+            {cell.getValue()}
+          </button>
+        );
+      },
+    }),
+    columnHelper.accessor("bibnumber", {
+      header: () => <span>Bib Nº</span>,
+    }),
+    columnHelper.accessor("finishtime", {
+      header: () => <span>Fin. Time</span>,
+    }),
+    columnHelper.accessor("timeDifference", {
+      header: () => <span>Time Diff.</span>,
+    }),
+    columnHelper.accessor((row) => row.flag, {
+      header: () => <span>Country</span>,
+      id: "flag",
+      cell: (info) => {
+        const flagUrl = info.row.original.flagUrl;
+        return flagUrl ? (
+          <img
+            src={flagUrl}
+            alt={`Flag of ${info.row.original.countryname}`}
+            className="border border-dark"
+            width={40}
+          />
+        ) : (
+          <span>{info.getValue()}</span>
+        );
+      },
+    }),
+  ];
   const table = useReactTable({
     data: data?.results.athletes || [],
     columns,
@@ -56,7 +71,12 @@ function ResultsTable() {
   });
 
   return (
-    <div>
+    <>
+      <PlayerModal
+        row={modalPlayer}
+        isOpen={modalPlayer !== null}
+        onClose={() => setModalPlayer(null)}
+      />
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -102,7 +122,7 @@ function ResultsTable() {
           ))}
         </tfoot>
       </table>
-    </div>
+    </>
   );
 }
 

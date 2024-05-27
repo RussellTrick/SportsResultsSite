@@ -1,2 +1,11 @@
 // Import all of Bootstrap's CSS
 @import "bootstrap/scss/bootstrap";
+
+.hover-none:hover {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
