@@ -6,12 +6,12 @@ function App() {
   const [hoveredIndex, setHoveredIndex] = useState<null | number>(null);
 
   const menuItems = [
-    { id: 1, label: "Work" },
-    { id: 2, label: "Services" },
-    { id: 3, label: "Toybox" },
-    { id: 4, label: "About" },
-    { id: 5, label: "Blog" },
-    { id: 6, label: "Contact" },
+    { id: 1, label: "Work", link: "https://www.google.com" },
+    { id: 2, label: "Services", link: "https://www.google.com" },
+    { id: 3, label: "Toybox", link: "https://www.google.com" },
+    { id: 4, label: "About", link: "https://www.google.com" },
+    { id: 5, label: "Blog", link: "https://www.google.com" },
+    { id: 6, label: "Contact", link: "https://www.google.com" },
   ];
 
   const handleMouseEnter = (index: number) => {
@@ -46,7 +46,9 @@ function App() {
                     : "black",
               }}
             >
-              <a>{menuItem.label}</a>
+              <a href={menuItem.link} target="_blank">
+                {menuItem.label}
+              </a>
             </li>
           ))}
         </ul>
