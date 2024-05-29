@@ -72,10 +72,58 @@ a:hover {
 
 .logo {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 6em;
-  padding: 1.5em;
+  top: 38.79px;
+  left: 38.79px;
+  width: 150px;
+  transition: filter 0.5s ease;
+}
+
+.logo:hover {
+  filter: brightness(0);
+}
+
+.the-menu {
+  position: absolute;
+  top: calc(28px + 1vw);
+  right: calc(60px + 1vw);
+  z-index: 9999;
+  transition: 0.4s ease-in-out;
+}
+
+.the-menu a {
+  display: block;
+  padding: 0 15px;
+  text-decoration: none;
+  margin-left: 10px;
+  text-transform: uppercase;
+  font-family: "Lato";
+  font-size: calc(8px + 0.2vw);
+  font-weight: normal;
+  letter-spacing: 3px;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+li {
+  text-align: -webkit-match-parent;
+  unicode-bidi: isolate;
+}
+
+ul li {
+  padding: 0;
+  margin: 0;
+}
+
+.hovered {
+  background-color: #f0f0f0;
+  color: blue;
 }
 
 // Loading logo
@@ -121,4 +169,8 @@ th {
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

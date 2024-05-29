@@ -2,6 +2,7 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { PlayerStats } from "../types";
@@ -17,6 +18,8 @@ function ResultsTable() {
   const [modalPlayer, setModalPlayer] = useState<PlayerStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [logoLoading, setLogoLoading] = useState<boolean>(true);
+  const caretHeight = 30;
+  const caretWidth = 30;
 
   useEffect(() => {
     if (data !== null) {
@@ -33,6 +36,7 @@ function ResultsTable() {
     columnHelper.accessor((row) => `${row.firstname} ${row.surname}`, {
       id: "fullName",
       header: () => <span>Name</span>,
+      enableSorting: false,
       cell: (cell) => {
         const rowData = cell.row.original;
         return (
@@ -52,12 +56,19 @@ function ResultsTable() {
     }),
     columnHelper.accessor("finishtime", {
       header: () => <span>Fin. Time</span>,
+      enableSorting: false,
+    }),
+    columnHelper.accessor("raceprogress", {
+      header: () => <span>Status</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor("timeDifference", {
       header: () => <span>Time Diff.</span>,
+      enableSorting: false,
     }),
     columnHelper.accessor((row) => row.flag, {
       header: () => <span>Country</span>,
+      enableSorting: false,
       id: "flag",
       cell: (info) => {
         const flagUrl = info.row.original.flagUrl;
@@ -78,6 +89,7 @@ function ResultsTable() {
     data: data?.results.athletes || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   if (loading) {
@@ -102,13 +114,11 @@ function ResultsTable() {
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="p-2 border">
+                  <th key={header.id} className="p-2 border user-select-none">
                     {header.isPlaceholder ? null : (
                       <div
                         className={
-                          header.column.getCanSort()
-                            ? "cursor-pointer select-none"
-                            : ""
+                          header.column.getCanSort() ? "cursor-pointer" : ""
                         }
                         onClick={header.column.getToggleSortingHandler()}
                         title={
@@ -125,9 +135,61 @@ function ResultsTable() {
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                        {header.column.getCanSort() &&
+                        !header.column.getIsSorted() ? (
+                          <svg
+                            height={caretHeight}
+                            width={caretWidth}
+                            viewBox="0 0 100 100"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <polygon
+                              points="50,25 60,45 40,45"
+                              fill="#7A7C7F"
+                            />
+                            <polygon
+                              points="50,75 60,55 40,55"
+                              fill="#7A7C7F"
+                            />
+                          </svg>
+                        ) : (
+                          ""
+                        )}
                         {{
-                          asc: " 🔼",
-                          desc: " 🔽",
+                          asc: (
+                            <svg
+                              height={caretHeight}
+                              width={caretWidth}
+                              viewBox="0 0 100 100"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <polygon
+                                points="50,25 60,45 40,45"
+                                fill="black"
+                              />
+                              <polygon
+                                points="50,75 60,55 40,55"
+                                fill="#7A7C7F"
+                              />
+                            </svg>
+                          ),
+                          desc: (
+                            <svg
+                              height={caretHeight}
+                              width={caretWidth}
+                              viewBox="0 0 100 100"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <polygon
+                                points="50,25 60,45 40,45"
+                                fill="#7A7C7F"
+                              />
+                              <polygon
+                                points="50,75 60,55 40,55"
+                                fill="Black"
+                              />
+                            </svg>
+                          ),
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
                     )}
