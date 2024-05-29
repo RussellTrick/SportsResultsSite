@@ -20,7 +20,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({ row, isOpen, onClose }) => {
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       >
         <div className="modal-content w-25">
-          <div className="modal-header justify-content-between">
+          <div className="modal-header justify-content-between p-4">
             <div className="d-flex flex-column flex-start align-start">
               <h5 className="modal-title">{row.firstname}</h5>
               <h6 className="text-left"> {row.surname}</h6>
@@ -39,7 +39,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({ row, isOpen, onClose }) => {
           <div className="modal-body d-flex gap-3">
             <img className="player-image"></img>
             <section className="d-flex flex-column align-items-start">
-              <p>{`Bib Number: ${row.bibnumber}`}</p>
+              <p>{`Athlete ID: ${row.athleteid}`}</p>
               <p>{`Finish Time: ${row.finishtime}`}</p>
               <p>{`Time Difference: ${row.timeDifference}`}</p>
             </section>

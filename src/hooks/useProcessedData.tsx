@@ -56,7 +56,7 @@ function useProcessedData() {
   const [data, setData] = useState<ResultsData | null>(null);
 
   useEffect(() => {
-    MockApiService.fetchData().then(async (fetchedData: ResultsData) => {
+    MockApiService.fetchData(1000).then(async (fetchedData: ResultsData) => {
       const processedData = calculateTimeDifferences(
         fetchedData.results.athletes
       );

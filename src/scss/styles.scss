@@ -1,6 +1,45 @@
 // Import all of Bootstrap's CSS
 @import "bootstrap/scss/bootstrap";
 
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
 .hover-none:hover {
   background-color: inherit !important;
   color: inherit !important;
@@ -18,8 +57,8 @@
   width: 35px;
   background: #26292a;
   position: absolute;
-  top: -20px;
-  right: -20px;
+  top: -15px;
+  right: -15px;
 }
 .close-mark {
   width: 25px;
@@ -35,4 +74,51 @@
   position: absolute;
   top: 0;
   left: 0;
+  height: 6em;
+  padding: 1.5em;
+}
+
+// Loading logo
+
+$speed: 0.75s;
+
+@keyframes pushForward {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.loader-container {
+  overflow: hidden;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-logo {
+  width: 500px;
+  filter: brightness(0) contrast(100%);
+  transition: transform $speed ease-in-out, opacity $speed ease-in-out;
+}
+
+.animate {
+  animation: pushForward $speed forwards;
+}
+
+th {
+  background: #e7e7e7;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
