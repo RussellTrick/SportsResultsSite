@@ -21,7 +21,7 @@ const PlayerModal: React.FC<PlayerModalProps> = ({ row, isOpen, onClose }) => {
       >
         <div className="modal-content w-25 player-modal">
           <div className="modal-header justify-content-between p-4">
-            <div className="d-flex flex-column flex-start align-start">
+            <div className="d-flex flex-column flex-start text-start">
               <h5 className="modal-title">{row.firstname}</h5>
               <h6 className="text-left"> {row.surname}</h6>
             </div>
