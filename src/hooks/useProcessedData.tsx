@@ -19,6 +19,14 @@ function calculateTimeDifferences(athletes: PlayerStats[]): PlayerStats[] {
 
   // Calculate time differences
   for (let i = 0; i < athletes.length; i++) {
+    //Continue if DNF
+    if (
+      athletes[i].finishtime === "DNF" ||
+      athletes[i].raceprogress === "DNF"
+    ) {
+      athletes[i].timeDifference = "DNF";
+      continue;
+    }
     const currentFinishTimeInSeconds = timeToSeconds(athletes[i].finishtime);
     const timeDifferenceInSeconds =
       currentFinishTimeInSeconds - firstPlaceFinishTimeInSeconds;
@@ -56,7 +64,7 @@ function useProcessedData() {
   const [data, setData] = useState<ResultsData | null>(null);
 
   useEffect(() => {
-    MockApiService.fetchData(1000).then(async (fetchedData: ResultsData) => {
+    MockApiService.fetchData(500).then(async (fetchedData: ResultsData) => {
       const processedData = calculateTimeDifferences(
         fetchedData.results.athletes
       );

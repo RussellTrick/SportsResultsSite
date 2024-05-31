@@ -5,11 +5,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { PlayerStats } from "../types";
+import { PlayerStats, ResultsData } from "../types";
 import useProcessedData from "../hooks/useProcessedData";
 import PlayerModal from "./PlayerModal";
 import { useEffect, useState } from "react";
 import loadingLogo from "../assets/GirraphicLogo.svg";
+import { convertToCsv } from "../services/raceService";
 
 const columnHelper = createColumnHelper<PlayerStats>();
 
@@ -18,12 +19,20 @@ function ResultsTable() {
   const [modalPlayer, setModalPlayer] = useState<PlayerStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [logoLoading, setLogoLoading] = useState<boolean>(true);
+  const [raceDetails, setRaceDetails] = useState<ResultsData | null>(null);
   const caretHeight = 30;
   const caretWidth = 30;
 
   useEffect(() => {
     if (data !== null) {
       setLogoLoading(false);
+      const newData = { ...data };
+      if (newData.results.gender === "male") {
+        newData.results.gender = "mens";
+      } else if (newData.results.gender === "female") {
+        newData.results.gender = "womens";
+      }
+      setRaceDetails(newData as ResultsData);
       setTimeout(() => setLoading(false), 750);
     }
   }, [data]);
@@ -85,6 +94,7 @@ function ResultsTable() {
       },
     }),
   ];
+
   const table = useReactTable({
     data: data?.results.athletes || [],
     columns,
@@ -92,6 +102,15 @@ function ResultsTable() {
     getSortedRowModel: getSortedRowModel(),
   });
 
+  const ConvertOnClick = () => {
+    if (data !== null) {
+      convertToCsv(data)
+        .then(() => alert("CSV file downloaded successfully"))
+        .catch((error) => alert("Error: " + error.message));
+    } else {
+      console.error("Data is null");
+    }
+  };
   if (loading) {
     return (
       <div className="loader-container">
@@ -109,6 +128,14 @@ function ResultsTable() {
           isOpen={modalPlayer !== null}
           onClose={() => setModalPlayer(null)}
         />
+        <div className="d-flex justify-content-between align-items-center py-3 mt-5">
+          <h5 className="m-0 race-title">
+            {`${raceDetails?.results?.gender?.toLocaleUpperCase()} ${raceDetails?.results.racename.toLocaleUpperCase()}`}
+          </h5>
+          <button className="btn btn-primary" onClick={ConvertOnClick}>
+            EXPORT
+          </button>
+        </div>
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
