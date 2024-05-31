@@ -1,3 +1,3 @@
 export const config = {
-  baseURL: "http://localhost:5140/api",
+  baseURL: "https://sportsitedemo.azurewebsites.net/api",
 };

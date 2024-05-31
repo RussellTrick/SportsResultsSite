@@ -104,9 +104,7 @@ function ResultsTable() {
 
   const ConvertOnClick = () => {
     if (data !== null) {
-      convertToCsv(data)
-        .then(() => alert("CSV file downloaded successfully"))
-        .catch((error) => alert("Error: " + error.message));
+      convertToCsv(data).catch((error) => alert("Error: " + error.message));
     } else {
       console.error("Data is null");
     }
