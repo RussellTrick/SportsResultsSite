@@ -1,7 +1,9 @@
 import {
+  PaginationState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -20,6 +22,10 @@ function ResultsTable() {
   const [loading, setLoading] = useState<boolean>(true);
   const [logoLoading, setLogoLoading] = useState<boolean>(true);
   const [raceDetails, setRaceDetails] = useState<ResultsData | null>(null);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const caretHeight = 30;
   const caretWidth = 30;
 
@@ -40,10 +46,11 @@ function ResultsTable() {
   const columns = [
     columnHelper.accessor("rank", {
       cell: (info) => info.getValue(),
-      header: () => <span>Pos.</span>,
+      header: () => <span>Rank</span>,
     }),
     columnHelper.accessor((row) => `${row.firstname} ${row.surname}`, {
       id: "fullName",
+      size: 220,
       header: () => <span>Name</span>,
       enableSorting: false,
       cell: (cell) => {
@@ -73,6 +80,7 @@ function ResultsTable() {
     }),
     columnHelper.accessor("timeDifference", {
       header: () => <span>Time Diff.</span>,
+      size: 120,
       enableSorting: false,
     }),
     columnHelper.accessor((row) => row.flag, {
@@ -85,8 +93,7 @@ function ResultsTable() {
           <img
             src={flagUrl}
             alt={`Flag of ${info.row.original.countryname}`}
-            className="border border-dark"
-            width={40}
+            className="border border-dark icon-flag"
           />
         ) : (
           <span>{info.getValue()}</span>
@@ -100,6 +107,11 @@ function ResultsTable() {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    state: {
+      pagination,
+    },
   });
 
   const ConvertOnClick = () => {
@@ -130,8 +142,21 @@ function ResultsTable() {
           <h5 className="m-0 race-title">
             {`${raceDetails?.results?.gender?.toLocaleUpperCase()} ${raceDetails?.results.racename.toLocaleUpperCase()}`}
           </h5>
-          <button className="btn btn-primary" onClick={ConvertOnClick}>
-            EXPORT
+          <button
+            className="btn btn-primary d-flex align-items-center justify-content-center"
+            onClick={ConvertOnClick}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20"
+              width="20"
+              viewBox="0 0 512 512"
+            >
+              <path
+                fill="#ffffff"
+                d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"
+              />
+            </svg>
           </button>
         </div>
         <table>
@@ -227,7 +252,11 @@ function ResultsTable() {
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-2 border">
+                  <td
+                    key={cell.id}
+                    className="p-2 border"
+                    style={{ width: cell.column.getSize() }}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -251,6 +280,68 @@ function ResultsTable() {
             ))}
           </tfoot>
         </table>
+        <div className="d-flex align-items-center gap-2 my-2">
+          <button
+            className="btn btn-primary"
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<"}
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">"}
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </button>
+          <span className="d-flex align-items-center gap-1">
+            <div>Page</div>
+            <strong>
+              {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount().toLocaleString()}
+            </strong>
+          </span>
+          <span className="d-flex align-items-center gap-1">
+            | Go to page:
+            <input
+              type="number"
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                table.setPageIndex(page);
+              }}
+              className="border p-1 rounded w-16 bg-white text-black"
+            />
+          </span>
+          <select
+            className="bg-white text-black"
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
       </>
     );
   }
