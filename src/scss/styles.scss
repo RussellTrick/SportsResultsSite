@@ -48,6 +48,15 @@ table {
   background: #feb404;
 }
 
+.bg-yellow:hover {
+  background: rgb(228, 159, 0);
+}
+
+.bg-yellow:active {
+  background: #be8500 !important;
+  border: solid 1px #bd8401 !important;
+}
+
 .icon-flag {
   width: 40px;
   height: 23px;
