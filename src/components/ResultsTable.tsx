@@ -94,6 +94,7 @@ function ResultsTable() {
             src={flagUrl}
             alt={`Flag of ${info.row.original.countryname}`}
             className="border border-dark icon-flag"
+            title={info.row.original.countryname}
           />
         ) : (
           <span>{info.getValue()}</span>
@@ -143,7 +144,7 @@ function ResultsTable() {
             {`${raceDetails?.results?.gender?.toLocaleUpperCase()} ${raceDetails?.results.racename.toLocaleUpperCase()}`}
           </h5>
           <button
-            className="btn btn-primary d-flex align-items-center justify-content-center"
+            className="btn btn-primary d-flex align-items-center justify-content-center bg-yellow"
             onClick={ConvertOnClick}
           >
             <svg
@@ -282,28 +283,28 @@ function ResultsTable() {
         </table>
         <div className="d-flex align-items-center gap-2 my-2">
           <button
-            className="btn btn-primary"
+            className="btn btn-primary bg-yellow"
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
           >
             {"<<"}
           </button>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary bg-yellow"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             {"<"}
           </button>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary bg-yellow"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
             {">"}
           </button>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary bg-yellow"
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
           >
