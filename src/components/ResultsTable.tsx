@@ -283,28 +283,28 @@ function ResultsTable() {
         </table>
         <div className="d-flex align-items-center gap-2 my-2">
           <button
-            className="btn bg-yellow text-black"
+            className="btn bg-yellow text-black user-select-none"
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
           >
             {"<<"}
           </button>
           <button
-            className="btn bg-yellow text-black"
+            className="btn bg-yellow text-black user-select-none"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             {"<"}
           </button>
           <button
-            className="btn bg-yellow text-black"
+            className="btn bg-yellow text-black user-select-none"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
             {">"}
           </button>
           <button
-            className="btn bg-yellow text-black"
+            className="btn bg-yellow text-black user-select-none"
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -327,6 +327,8 @@ function ResultsTable() {
                 table.setPageIndex(page);
               }}
               className="border p-1 rounded w-16 bg-white text-black"
+              min="1"
+              max={table.getPageCount()}
             />
           </span>
           <select
