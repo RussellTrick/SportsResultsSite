@@ -1,4 +1,4 @@
-## install and run in development mode
+## How to install dependencies and run in development mode
 - Clone/fork the repo
 
 `npm install`
